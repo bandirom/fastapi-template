@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "fastapi-template"
+version = "0.1.0"
+description = ""
+authors = ["bandirom <bandirom@ukr.net>"]
+readme = "readme.md"
+packages = [{include = "fastapi_template"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "~=0.19"
+alembic = "~=1.8"
+fastapi = "~=0.86"
+sqlalchemy = "~=1.4"
+
+[tool.poetry.group.test.dependencies]
+coverage = "~=6.5"
+pytest = "~=7.2"
+pytest-mock = "~=3.10"
+black = "~=22.10"
+isort = "~=5.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
