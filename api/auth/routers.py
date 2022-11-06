@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 
+from api.auth.schemas import SignInSchema
+
 router = APIRouter()
 
 
@@ -8,6 +10,6 @@ def read_root():
     return {"Hello": "World"}
 
 
-@router.get("/test")
-def read_test():
+@router.post("/sign-in")
+def sign_in(data: SignInSchema):
     return {"Hello": "World"}
