@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "fastapi-template"
+version = "0.1.0"
+description = ""
+authors = ["bandirom <bandirom@ukr.net>"]
+readme = "README.md"
+packages = [{include = "fastapi_template"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = {extras = ["standard"], version = "~=0.19"}
+fastapi = "~=0.86"
+tortoise-orm = {extras = ["asyncpg"], version = "~=0.19"}
+aerich = "~=0.7"
+#alembic = "~=1.8"
+#sqlalchemy = "~=1.4"
+
+[tool.poetry.group.test.dependencies]
+coverage = "~=6.5"
+pytest = "~=7.2"
+pytest-mock = "~=3.10"
+black = "~=22.10"
+isort = "~=5.10"
+
+
+[tool.aerich]
+tortoise_orm = "main.TORTOISE_ORM"
+location = "./migrations"
+src_folder = "./."
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
