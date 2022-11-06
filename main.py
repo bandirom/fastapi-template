@@ -4,24 +4,13 @@ from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
 from api.urls import router as api_router
+from src.settings import TORTOISE_ORM
 
 DEBUG = True
 app = FastAPI()
 
 app.include_router(api_router, prefix='/api')
 
-
-TORTOISE_ORM = {
-    'connections': {
-        'default': 'sqlite://db.sqlite3',
-    },
-    'apps': {
-        'models': {
-            'models': ['models', 'aerich.models'],
-            'default_connection': 'default',
-        },
-    },
-}
 
 register_tortoise(
     app,
