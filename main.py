@@ -9,7 +9,7 @@ from tortoise.contrib.fastapi import register_tortoise
 from api.urls import router as api_router
 from src import settings
 
-DEBUG = int(os.environ.get('DEBUG', 1))
+DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 
 app = FastAPI()
 
