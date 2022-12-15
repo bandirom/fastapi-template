@@ -1,3 +1,5 @@
+import os
+
 from fastapi_jwt_auth import AuthJWT
 from pydantic import BaseModel
 
@@ -10,6 +12,8 @@ class Settings(BaseModel):
 def get_config():
     return Settings()
 
+
+PROJECT_NAME = os.environ.get('PROJECT_NAME', 'FastAPI')
 
 TORTOISE_ORM = {
     'connections': {

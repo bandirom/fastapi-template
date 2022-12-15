@@ -1,20 +1,43 @@
-import uvicorn
+import os
 
+import uvicorn
 from fastapi import FastAPI
+from fastapi.openapi.utils import get_openapi
+from fastapi.staticfiles import StaticFiles
 from tortoise.contrib.fastapi import register_tortoise
 
 from api.urls import router as api_router
-from src.settings import TORTOISE_ORM
+from src import settings
 
-DEBUG = True
+DEBUG = int(os.environ.get('DEBUG', 1))
+
 app = FastAPI()
 
 app.include_router(api_router, prefix='/api')
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title=settings.PROJECT_NAME,
+        version="0.1.0",
+        description="OpenAPI schema",
+        routes=app.routes,
+    )
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png"
+    }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
 
 register_tortoise(
     app,
-    config=TORTOISE_ORM,
+    config=settings.TORTOISE_ORM,
     generate_schemas=DEBUG,
     add_exception_handlers=True,
 )
