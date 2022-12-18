@@ -8,7 +8,11 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     PROJECT_NAME: str = 'FastApi Template'
 
-    TORTOISE_ORM = {
+
+settings = Settings()
+
+
+TORTOISE_ORM = {
         'connections': {
             'default': 'sqlite://db.sqlite3',
         },
@@ -19,6 +23,3 @@ class Settings(BaseSettings):
             },
         },
     }
-
-
-settings = Settings()
