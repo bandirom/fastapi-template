@@ -8,8 +8,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-uvicorn = {extras = ["standard"], version = "~=0.20"}
 fastapi = "~=0.88"
+uvicorn = {extras = ["standard"], version = "~=0.20"}
 tortoise-orm = {extras = ["asyncpg"], version = "~=0.19"}
 aerich = "~=0.7"
 email-validator = "~=1.3"
@@ -21,8 +21,10 @@ passlib = "^1.7.4"
 coverage = "~=6.5"
 pytest = "~=7.2"
 pytest-mock = "~=3.10"
+pytest-asyncio = "~=0.20"
 black = "~=22.12"
 isort = "~=5.11"
+flake8 = "~=6.0"
 
 [tool.poetry.group.prod.dependencies]
 gunicorn = "~=20.1"
@@ -39,11 +41,45 @@ build-backend = "poetry.core.masonry.api"
 [tool.isort]
 multi_line_output = 3
 skip = "migrations"
-line_length = 110
+line_length = 120
 include_trailing_comma = true
 profile = "black"
 
 [tool.black]
-line-length = 110
+line-length = 120
 exclude = "migrations"
 skip-string-normalization = true
+
+
+[tool.pytest.ini_options]
+norecursedirs = [
+  ".git ",
+  "node_modules",
+]
+python_files = "test_*.py"
+python_classes = "*Test*"
+log_cli = "true"
+log_cli_level = "info"
+
+[tool.coverage.run]
+omit = [
+  "*/migrations/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "^\\s*@(abc.)?abstractmethod",
+  "^\\s*@(typing.)?overload",
+  "^\\s*if (typing.)?TYPE_CHECKING:",
+  "^\\s*if (settings.)?DEBUG:",
+  "pragma: no ?cover",
+  "def __repr__",
+  "def __str__",
+  "if self.debug:",
+  "raise AssertionError",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+]
+
+[tool.coverage.xml]
+output = "coverage.xml"
