@@ -1,5 +1,4 @@
 from tortoise import models, fields
-from datetime import datetime
 
 
 class User(models.Model):
@@ -10,4 +9,4 @@ class User(models.Model):
     password = fields.CharField(max_length=200, null=False)
     is_active = fields.BooleanField(default=False)
     is_admin = fields.BooleanField(default=False)
-    date_joined = fields.DatetimeField(default=datetime.utcnow)
+    date_joined = fields.DatetimeField(auto_now_add=True)
