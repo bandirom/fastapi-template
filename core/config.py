@@ -1,13 +1,11 @@
 import os
-
-from fastapi_jwt_auth import AuthJWT
 from pydantic import BaseSettings
 
 
 class Settings(BaseSettings):
-    authjwt_secret_key: str = "secret"
-
-    PROJECT_NAME = os.environ.get('PROJECT_NAME', 'FastAPI')
+    SECRET_KEY: str = 'changeMe'
+    DEBUG: bool = True
+    PROJECT_NAME: str = 'FastApi Template'
 
     TORTOISE_ORM = {
         'connections': {
@@ -20,14 +18,6 @@ class Settings(BaseSettings):
             },
         },
     }
-
-
-@AuthJWT.load_config
-def get_config():
-    return Settings()
-
-
-
 
 
 settings = Settings()

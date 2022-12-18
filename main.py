@@ -1,5 +1,3 @@
-import os
-
 import uvicorn
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
@@ -8,8 +6,6 @@ from tortoise.contrib.fastapi import register_tortoise
 
 from api.urls import router as api_router
 from core.config import settings
-
-DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 
 app = FastAPI()
 
@@ -38,10 +34,10 @@ app.openapi = custom_openapi
 register_tortoise(
     app,
     config=settings.TORTOISE_ORM,
-    generate_schemas=DEBUG,
+    generate_schemas=settings.DEBUG,
     add_exception_handlers=True,
 )
 
 
 if __name__ == '__main__':
-    uvicorn.run('main:app', host='0.0.0.0', port=8080, log_level='info', reload=DEBUG)
+    uvicorn.run('main:app', host='0.0.0.0', port=8080, log_level='info', reload=settings.DEBUG)
