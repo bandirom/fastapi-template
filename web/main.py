@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from tortoise.contrib.fastapi import register_tortoise
 
 from api.urls import router as api_router
-from core.config import settings, TORTOISE_ORM
+from core.config import TORTOISE_ORM, settings
 
 app = FastAPI()
 
