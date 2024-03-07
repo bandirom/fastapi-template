@@ -1,8 +1,7 @@
 from fastapi import APIRouter
 
+from .auth import AuthRouter
+
 router = APIRouter()
 
-
-@router.get('/hello',)
-def hello():
-    return {'detail': True}
+router.include_router(AuthRouter().router, prefix='/auth', tags=['auth'])

@@ -11,7 +11,12 @@ fastapi = "~=0.110"
 alembic = "~=1.13"
 sqlalchemy = "~=2.0"
 pydantic-settings = "~=2.2"
-uvicorn = { version="~=0.27", extras = ["standard"] }
+uvicorn = { version="~=0.28", extras = ["standard"] }
+asyncpg = "~=0.29"
+python-jose = "~=3.3"
+cryptography = "~=42.0"
+passlib = { version="~=1.7", extras = ["bcrypt"] }
+pydantic = { version="~=2.6", extras = ["email"] }
 
 
 [tool.poetry.group.dev]

@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:15.1-alpine
+    restart: 'unless-stopped'
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: develop
+      POSTGRES_PASSWORD: develop
+      POSTGRES_DB: develop
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U $$POSTGRES_USER" ]
+      interval: 50s
+      timeout: 5s
+      retries: 5
+  redis:
+    image: redis:7.0.8-alpine
+    restart: 'unless-stopped'
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli","ping" ]
+      interval: 1m20s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  postgres_data:
+  redis_data:
