@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "fastapiproject"
+version = "0.1.0"
+description = ""
+authors = ["Nazarii <romanchenko@procivis.ch>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "~=0.110"
+alembic = "~=1.13"
+sqlalchemy = "~=2.0"
+pydantic-settings = "~=2.2"
+uvicorn = { version="~=0.27", extras = ["standard"] }
+
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = "~=8.0"
+black = "~=24.2"
+isort = "~=5.13"
+
+[tool.poetry.group.prod]
+optional = true
+
+[tool.poetry.group.prod.dependencies]
+gunicorn = "~=21.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
