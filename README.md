@@ -5,6 +5,18 @@
 poetry install
 ```
 
+* Create `.env` file
+```dotenv
+DATABASE_URI="postgresql+asyncpg://develop:develop@localhost/develop"
+DEBUG=true
+SECRET_KEY="someSecret"
+```
+
+* Run docker db
+```shell
+docker-compose up -d
+```
+
 * Run project
 ```shell
 uvicorn main:app --reload
