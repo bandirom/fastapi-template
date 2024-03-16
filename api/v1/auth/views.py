@@ -1,12 +1,17 @@
-from api.v1.auth.schemas import UserSighUpSchema
-from api.v1.auth.services import UserSignUpService
 from db.session import SessionDep
 
+from .schemas import UserSignInSchema, UserSignUpSchema
+from .services import LoginService, SignUpService
 
-class SignUpView:
-    async def post(self, data: UserSighUpSchema, session: SessionDep):
-        service = UserSignUpService(session, data)
-        await service.validate()
-        user = await service.create_user()
-        print(f'{user=}')
-        return {'detail': user.id}
+
+async def sign_up_view(data: UserSignUpSchema, session: SessionDep):
+    service = SignUpService(session, data)
+    await service.validate()
+    user = await service.create_user()
+    return {'detail': user.id}
+
+
+async def sign_in_view(data: UserSignInSchema, session: SessionDep):
+    service = LoginService(session, data)
+    user = await service.authenticate()
+    return await service.generate_response(user)

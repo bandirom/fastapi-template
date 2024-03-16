@@ -1,8 +1,8 @@
 # FastApi project
 
-* Install dependencies
+* Install dependencies (Source: [poetry](https://python-poetry.org/docs/managing-dependencies/))
 ```shell
-poetry install
+poetry install --with dev
 ```
 
 * Create `.env` file
@@ -20,7 +20,9 @@ docker-compose up -d
 * Run project
 ```shell
 uvicorn main:app --reload
-or 
+```
+or
+```shell
 python main.py
 ```
 
@@ -51,6 +53,11 @@ alembic upgrade head
 
 * Get users
 ```python
-result = await session.execute(select(User))
-users = result.scalars().all()
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from db.models import User
+
+async def get_users(session: AsyncSession):
+    result = await session.execute(select(User))
+    return result.scalars().all()
 ```

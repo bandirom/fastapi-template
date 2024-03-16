@@ -1,8 +1,7 @@
-
 from pydantic import BaseModel, EmailStr, Field
 
 
-class UserSighUpSchema(BaseModel):
+class UserSignUpSchema(BaseModel):
     email: EmailStr = Field(..., description="User email")
     first_name: str = Field(..., description="User first name")
     last_name: str = Field(..., description="User last name")
@@ -15,3 +14,8 @@ class UserSighUpSchema(BaseModel):
     @property
     def full_name(self) -> str:
         return f"{self.first_name} {self.last_name}"
+
+
+class UserSignInSchema(BaseModel):
+    email: EmailStr = Field(..., description="User email")
+    password: str = Field(..., min_length=8, description="User password")

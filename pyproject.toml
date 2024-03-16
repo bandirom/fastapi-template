@@ -36,3 +36,16 @@ gunicorn = "~=21.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+extend-exclude = "versions"
+skip-string-normalization = true
+
+[tool.isort]
+multi_line_output = 3
+skip = ["versions", "venv"]
+line_length = 120
+include_trailing_comma = true
+profile = "black"
+known_third_party = "celery"

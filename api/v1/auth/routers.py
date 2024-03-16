@@ -1,19 +1,18 @@
-from fastapi import APIRouter
+from api.services.base_router import BaseRouter
+from api.v1.auth import views
 
-from api.v1.auth.views import SignUpView
 
-
-class AuthRouter:
+class AuthRouter(BaseRouter):
 
     def __init__(self):
-        self._router = APIRouter()
-        self.signup_view = SignUpView()
+        super().__init__()
         self._router.add_api_route(
-            path='/signup',
-            endpoint=self.signup_view.post,
+            path='/sign-up',
+            endpoint=views.sign_up_view,
             methods=['POST'],
         )
-
-    @property
-    def router(self) -> APIRouter:
-        return self._router
+        self._router.add_api_route(
+            path='/sign-in',
+            endpoint=views.sign_in_view,
+            methods=['POST'],
+        )

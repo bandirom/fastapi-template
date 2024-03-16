@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
 from typing import Any
 
+from jose import jwt
 from passlib.context import CryptContext
 
 from core import settings
-from jose import jwt
 
 
 class JwtService:

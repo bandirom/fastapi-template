@@ -2,25 +2,25 @@ import re
 from collections import defaultdict
 
 from fastapi import HTTPException
-from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.services.security import PasswordManager
-from api.v1.auth.schemas import UserSighUpSchema
+from api.error_codes import ErrorCode
+from api.exceptions import ValidationError
+from api.services.security import JwtService, PasswordManager
+from api.v1.auth.schemas import UserSignInSchema, UserSignUpSchema
 from db.models import User
+from db.queries.user import UserQueryService
 
 
-class UserSignUpService:
+class SignUpService:
     password_manager = PasswordManager
 
-    def __init__(self, session: AsyncSession, data: UserSighUpSchema):
-        self.session = session
+    def __init__(self, session: AsyncSession, data: UserSignUpSchema):
+        self.query = UserQueryService(session)
         self.data = data
 
     async def _is_email_exists(self) -> bool:
-        query = select(User).filter(User.email == self.data.email)
-        result = await self.session.execute(query)
-        return bool(result.scalars().first())
+        return await self.query.is_email_exists(self.data.email)
 
     async def validate_password(self) -> defaultdict[str, list]:
         errors = defaultdict[str, list](list)
@@ -52,7 +52,33 @@ class UserSignUpService:
 
     async def create_user(self) -> User:
         self.data.password = self.password_manager().get_hashed_password(self.data.password)
-        user = User(**self.data.dict())
-        self.session.add(user)
-        await self.session.commit()
+        user = User(**self.data.dict(), is_active=True)
+        await self.query.create_user(user)
         return user
+
+
+class LoginService:
+    password_manager = PasswordManager
+
+    def __init__(self, session: AsyncSession, data: UserSignInSchema):
+        self.data = data
+        self.query = UserQueryService(session)
+
+    async def authenticate(self) -> User:
+        user = await self.query.get_user_by_email(self.data.email)
+        if not user:
+            raise ValidationError(ErrorCode.WRONG_CREDENTIALS)
+        if not self.password_manager().verify_password(self.data.password, user.password):
+            raise ValidationError(ErrorCode.WRONG_CREDENTIALS)
+        if not user.is_active:
+            raise ValidationError(ErrorCode.NOT_ACTIVE)
+        return user
+
+    async def generate_response(self, user: User) -> dict:
+        service = JwtService()
+        access_token = service.create_access_token(user.id)
+        refresh_token = service.create_refresh_token(user.id)
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_token,
+        }
