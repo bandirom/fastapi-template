@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 
 from fastapi import HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.error_codes import ErrorCode
@@ -60,12 +61,12 @@ class SignUpService:
 class LoginService:
     password_manager = PasswordManager
 
-    def __init__(self, session: AsyncSession, data: UserSignInSchema):
+    def __init__(self, session: AsyncSession, data: OAuth2PasswordRequestForm):
         self.data = data
         self.query = UserQueryService(session)
 
     async def authenticate(self) -> User:
-        user = await self.query.get_user_by_email(self.data.email)
+        user = await self.query.get_user_by_email(self.data.username)
         if not user:
             raise ValidationError(ErrorCode.WRONG_CREDENTIALS)
         if not self.password_manager().verify_password(self.data.password, user.password):
