@@ -19,7 +19,7 @@ services:
     image: redis:7.0.8-alpine
     restart: 'unless-stopped'
     ports:
-      - "6379:6379"
+      - "6380:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -27,6 +27,16 @@ services:
       interval: 1m20s
       timeout: 5s
       retries: 3
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: 'unless-stopped'
+    ports:
+      - "8001:8000"
+    volumes:
+      - /home/gregory/PycharmProjects/fastapi-template:/app
+
 
 volumes:
   postgres_data:
