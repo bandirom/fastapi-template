@@ -35,7 +35,7 @@ services:
     ports:
       - "8001:8000"
     volumes:
-      - /home/gregory/PycharmProjects/fastapi-template:/app
+      - ./:/app
 
 
 volumes:
