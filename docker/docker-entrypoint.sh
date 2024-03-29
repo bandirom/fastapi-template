@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
-alembic upgrade head
+#if [ ! -d "alembic" ]; then
+    alembic upgrade head
+#fi
 
 exec "$@"
