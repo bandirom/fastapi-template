@@ -32,6 +32,8 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
     restart: 'unless-stopped'
+    depends_on:
+      - db
     ports:
       - "8001:8000"
     volumes:

@@ -18,5 +18,5 @@ EXPOSE 8000
 COPY docker/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-ENTRYPOINT ["docker-entrypoint.sh"]
+#ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["gunicorn", "-c", "core/gunicorn.conf.py", "main:app"]
