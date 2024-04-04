@@ -6,7 +6,9 @@ from . import Base
 class User(Base):
     __tablename__ = "user"
 
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True, index=True)
+    id: Mapped[int] = mapped_column(
+        primary_key=True, autoincrement=True, index=True
+    )
     email: Mapped[str] = mapped_column(unique=True, index=True)
     password: Mapped[str] = mapped_column(nullable=True)
     is_active: Mapped[bool] = mapped_column(default=False)

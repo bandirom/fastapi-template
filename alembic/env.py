@@ -10,7 +10,9 @@ from core import settings
 
 config = context.config
 
-config.set_main_option("sqlalchemy.url", settings.database_uri.unicode_string())
+config.set_main_option(
+    "sqlalchemy.url", settings.database_uri.unicode_string()
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.

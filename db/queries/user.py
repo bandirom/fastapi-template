@@ -7,7 +7,6 @@ from db.models import User
 
 
 class UserQueryService:
-
     def __init__(self, session: AsyncSession):
         self.session = session
 

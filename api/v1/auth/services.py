@@ -26,15 +26,25 @@ class SignUpService:
         errors = defaultdict[str, list](list)
         password = self.data.password
         if len(password) < 8:
-            errors['password'].append("Password must be at least 8 characters long")
+            errors['password'].append(
+                "Password must be at least 8 characters long"
+            )
         if not re.search(r'[A-Z]', password):
-            errors['password'].append("Password must contain at least one uppercase letter")
+            errors['password'].append(
+                "Password must contain at least one uppercase letter"
+            )
         if not re.search(r'[a-z]', password):
-            errors['password'].append("Password must contain at least one lowercase letter")
+            errors['password'].append(
+                "Password must contain at least one lowercase letter"
+            )
         if not re.search(r'[0-9]', password):
-            errors['password'].append("Password must contain at least one digit")
+            errors['password'].append(
+                "Password must contain at least one digit"
+            )
         if not re.search(r'[^a-zA-Z0-9]', password):
-            errors['password'].append("Password must contain at least one special character")
+            errors['password'].append(
+                "Password must contain at least one special character"
+            )
         if self.data.password != self.data.password_confirm:
             errors['password_confirm'].append("Passwords do not match")
         return errors
@@ -51,7 +61,9 @@ class SignUpService:
         return errors
 
     async def create_user(self) -> User:
-        self.data.password = self.password_manager().get_hashed_password(self.data.password)
+        self.data.password = self.password_manager().get_hashed_password(
+            self.data.password
+        )
         user = User(**self.data.dict(), is_active=True)
         await self.query.create_user(user)
         return user
@@ -68,7 +80,9 @@ class LoginService:
         user = await self.query.get_user_by_email(self.data.email)
         if not user:
             raise ValidationError(ErrorCode.WRONG_CREDENTIALS)
-        if not self.password_manager().verify_password(self.data.password, user.password):
+        if not self.password_manager().verify_password(
+            self.data.password, user.password
+        ):
             raise ValidationError(ErrorCode.WRONG_CREDENTIALS)
         if not user.is_active:
             raise ValidationError(ErrorCode.NOT_ACTIVE)

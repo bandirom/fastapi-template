@@ -8,26 +8,37 @@ from core import settings
 
 
 class JwtService:
-
     def __init__(
         self,
         access_token_expire_minutes: int = None,
         refresh_token_expire_minutes: int = None,
         algorithm: str = None,
     ):
-        self.access_token_expire = access_token_expire_minutes or settings.jwt.ACCESS_TOKEN_EXPIRE_MINUTES
-        self.refresh_token_expire = refresh_token_expire_minutes or settings.jwt.REFRESH_TOKEN_EXPIRE_MINUTES
+        self.access_token_expire = (
+            access_token_expire_minutes
+            or settings.jwt.ACCESS_TOKEN_EXPIRE_MINUTES
+        )
+        self.refresh_token_expire = (
+            refresh_token_expire_minutes
+            or settings.jwt.REFRESH_TOKEN_EXPIRE_MINUTES
+        )
         self.algorithm = algorithm or settings.jwt.ALGORITHM
         self.access_token_secret_key = settings.jwt.JWT_SECRET_KEY
         self.refresh_token_secret_key = settings.jwt.JWT_REFRESH_SECRET_KEY
 
     def create_access_token(self, subject: str | Any) -> str:
-        return self.__get_encoded_jwt(subject, self.access_token_expire, self.access_token_secret_key)
+        return self.__get_encoded_jwt(
+            subject, self.access_token_expire, self.access_token_secret_key
+        )
 
     def create_refresh_token(self, subject: str | Any) -> str:
-        return self.__get_encoded_jwt(subject, self.refresh_token_expire, self.refresh_token_secret_key)
+        return self.__get_encoded_jwt(
+            subject, self.refresh_token_expire, self.refresh_token_secret_key
+        )
 
-    def __get_encoded_jwt(self, subject: str, expires_minutes: int, secret_key: str) -> str:
+    def __get_encoded_jwt(
+        self, subject: str, expires_minutes: int, secret_key: str
+    ) -> str:
         expires_delta = datetime.now() + timedelta(minutes=expires_minutes)
         to_encode = {"exp": expires_delta, "sub": str(subject)}
         encoded_jwt = jwt.encode(
