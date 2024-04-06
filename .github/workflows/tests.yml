@@ -22,3 +22,31 @@ jobs:
       - name: pytest
         run:
           pytest
+  black:
+    name: run black
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: install dependencies
+        run: |
+          pip install black
+      - name: black
+        run: black . --check
+  isort:
+    name: run isort
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: install dependencies
+        run: |
+          pip install isort
+      - name: isort
+        run: isort . --check
