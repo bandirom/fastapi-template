@@ -1,9 +1,12 @@
 import secrets
 from functools import lru_cache
 
+import aioredis
 from dotenv import load_dotenv
-from pydantic import BaseModel, PostgresDsn
+from pydantic import BaseModel, PostgresDsn, RedisDsn
 from pydantic_settings import BaseSettings
+
+from .redis import AsyncRedisClient
 
 load_dotenv()
 
@@ -18,6 +21,7 @@ class JwtTokenSettings(BaseModel):
 
 class Settings(BaseSettings):
     database_uri: PostgresDsn
+    redis_uri: RedisDsn
     project_name: str = 'Template'
     DEBUG: bool = False
     jwt: JwtTokenSettings = JwtTokenSettings()
@@ -33,3 +37,12 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+
+redis_instance = aioredis.Redis(
+    host=settings.redis_uri.host,
+    port=settings.redis_uri.port,
+    password=settings.redis_uri.password,
+    decode_responses=True,
+)
+
+redis_client = AsyncRedisClient(redis_instance)

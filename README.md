@@ -8,6 +8,7 @@ poetry install --with dev
 * Create `.env` file
 ```dotenv
 DATABASE_URI="postgresql+asyncpg://develop:develop@localhost/develop"
+REDIS_URI="redis://localhost:6379"
 DEBUG=true
 SECRET_KEY="someSecret"
 ```
