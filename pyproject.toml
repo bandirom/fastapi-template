@@ -49,3 +49,14 @@ line_length = 120
 include_trailing_comma = true
 profile = "black"
 known_third_party = "celery"
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "integration"]
+addopts = "-v -ra -q"
+log_cli = true
+log_cli_level = "INFO"
+log_format = "%(asctime)s %(levelname)s %(message)s"
+log_date_format = "%Y-%m-%d %H:%M:%S"
+minversion = "6.0"
+filterwarnings = "ignore"
+norecursedirs = docs,build
