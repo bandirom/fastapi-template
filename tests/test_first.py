@@ -1,11 +1,10 @@
 import os
 
-import pytest
-from alembic import config
-from alembic import script
-from alembic.runtime import migration
 import sqlalchemy
 from dotenv import load_dotenv
+
+from alembic import config, script
+from alembic.runtime import migration
 
 load_dotenv()
 
