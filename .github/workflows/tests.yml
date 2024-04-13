@@ -12,7 +12,6 @@ jobs:
   tests:
     name: run pytest
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/setup-python@v5
         with:
@@ -81,5 +80,7 @@ jobs:
         run: |
           pip install poetry
           poetry install
+      - name: apply migrations
+        run: alembic upgrade head
       - name: check migrations
         run: alembic check
