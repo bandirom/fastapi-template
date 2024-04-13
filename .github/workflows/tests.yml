@@ -4,6 +4,7 @@ on:
     branches:
 env:
   POETRY_VIRTUALENVS_CREATE: false
+  DATABASE_URI: 'postgresql+asyncpg://fastapi:postgres_password@postgres/template'
 
 jobs:
   tests:
@@ -65,8 +66,6 @@ jobs:
           poetry install
       - name: check migrations
         run: alembic check
-    env:
-      DATABASE_URI: 'postgresql+asyncpg://fastapi:postgres_password@postgres:5432/template'
     services:
       postgres:
         image: postgres:15.1-alpine
