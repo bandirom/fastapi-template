@@ -2,13 +2,13 @@ name: Tests
 on:
   push:
     branches:
+env:
+  POETRY_VIRTUALENVS_CREATE: false
 
 jobs:
   tests:
     name: run pytest
     runs-on: ubuntu-latest
-    env:
-      POETRY_VIRTUALENVS_CREATE: false
     steps:
       - uses: actions/setup-python@v5
         with:
