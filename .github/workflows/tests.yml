@@ -6,7 +6,7 @@ on:
 
 env:
   POETRY_VIRTUALENVS_CREATE: false
-  DATABASE_URI: 'postgresql+asyncpg://fastapi:postgres_password@localhost/template'
+  DATABASE_URI: 'postgresql+asyncpg://fastapi:postgres_password@postgres/template'
 
 jobs:
   tests:
