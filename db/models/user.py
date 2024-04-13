@@ -12,3 +12,4 @@ class User(Base):
     is_active: Mapped[bool] = mapped_column(default=False)
     first_name: Mapped[str] = mapped_column(nullable=True)
     last_name: Mapped[str] = mapped_column(nullable=True)
+    avatar: Mapped[str] = mapped_column(nullable=True)
