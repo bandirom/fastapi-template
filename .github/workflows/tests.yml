@@ -2,14 +2,30 @@ name: Tests
 on:
   push:
     branches:
+      - '*'
+
 env:
   POETRY_VIRTUALENVS_CREATE: false
-  DATABASE_URI: 'postgresql+asyncpg://fastapi:postgres_password@postgres/template'
+  DATABASE_URI: 'postgresql+asyncpg://fastapi:postgres_password@localhost:5432/template'
 
 jobs:
   tests:
     name: run pytest
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.1-alpine
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_PASSWORD: postgres_password
+          POSTGRES_USER: fastapi
+          POSTGRES_DB: template
     steps:
       - uses: actions/setup-python@v5
         with:
@@ -52,20 +68,8 @@ jobs:
       - name: isort
         run: isort . --check
   alembic_check:
-    name: run alembic_check
+    name: run alembic check
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: install dependencies
-        run: |
-          pip install poetry
-          poetry install
-      - name: check migrations
-        run: alembic check
     services:
       postgres:
         image: postgres:15.1-alpine
@@ -80,3 +84,17 @@ jobs:
           POSTGRES_PASSWORD: postgres_password
           POSTGRES_USER: fastapi
           POSTGRES_DB: template
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: checkout repo
+        uses: actions/checkout@v4
+      - name: install dependencies
+        run: |
+          pip install poetry
+          poetry install
+      - name: apply migrations
+        run: alembic upgrade head
+      - name: check migrations
+        run: alembic check
