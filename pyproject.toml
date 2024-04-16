@@ -17,7 +17,6 @@ python-jose = "~=3.3"
 cryptography = "~=42.0"
 passlib = { version="~=1.7", extras = ["bcrypt"] }
 pydantic = { version="~=2.6", extras = ["email"] }
-pytest = "^8.1.1"
 
 
 [tool.poetry.group.dev]
