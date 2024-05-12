@@ -21,6 +21,9 @@ app.include_router(v1_router, prefix='/api/v1')
 app.add_exception_handler(ValidationError, validation_exception_handler)
 
 if __name__ == '__main__' and settings.DEBUG:
+    from dotenv import load_dotenv
     from uvicorn import run
+
+    load_dotenv()
 
     run('main:app', host='0.0.0.0', port=8080, reload=True)
