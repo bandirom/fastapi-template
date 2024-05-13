@@ -1,11 +1,8 @@
 import secrets
 from functools import lru_cache
 
-from dotenv import load_dotenv
 from pydantic import BaseModel, PostgresDsn
 from pydantic_settings import BaseSettings
-
-load_dotenv()
 
 
 class JwtTokenSettings(BaseModel):

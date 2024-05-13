@@ -61,3 +61,35 @@ async def get_users(session: AsyncSession):
     result = await session.execute(select(User))
     return result.scalars().all()
 ```
+---
+
+## Docker & docker compose
+
+### Useful commands
+
+* Build image
+```shell
+docker build -t fastapi-project -f docker/Dockerfile .
+```
+
+```shell
+docker compose build
+```
+
+* Run container
+```shell
+docker run --rm -it -p 8080:8080 fastapi-project
+```
+
+```shell
+docker compose up -d
+```
+
+* Open shell
+```shell
+docker run --rm --entrypoint="" -it fastapi-project sh
+```
+
+```shell
+docker compose exec app sh
+```
