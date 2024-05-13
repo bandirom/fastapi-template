@@ -27,7 +27,7 @@ jobs:
         with:
           path: ~/.cache/pypoetry
           key: poetry-cache-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ env.POETRY_VERSION }}
-      # virtualenv cache should depend on OS, Python version and `poetry.lock` (and optionally workflow files).
+      # virtualenv cache should depend on OS, Python version and `poetry.lock` (and optionally workflow files)..
       - name: Cache Packages
         uses: actions/cache@v3
         with:
