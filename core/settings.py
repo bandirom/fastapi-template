@@ -22,7 +22,9 @@ class Settings(BaseSettings):
 
     class Config:
         env_nested_delimiter = "__"
-
+        env_file = '.env'
+        env_prefix = ""
+        extra = "ignore"
 
 @lru_cache
 def get_settings() -> Settings:
@@ -30,3 +32,4 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
+print(f'{settings=}')

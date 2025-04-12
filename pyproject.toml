@@ -3,39 +3,42 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "fastapiproject"
+name = "Fast Api template project"
 version = "0.1.0"
 description = ""
-authors = ["Nazarii <romanchenko@procivis.ch>"]
+authors = ["Nazarii"]
 readme = "README.md"
+package-mode = false
+license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-fastapi = "~=0.111"
-alembic = "~=1.13"
+fastapi = "~=0.115"
+alembic = "~=1.14"
 sqlalchemy = "~=2.0"
-pydantic-settings = "~=2.2"
-uvicorn = { version="~=0.28", extras = ["standard"] }
-asyncpg = "~=0.29"
-python-jose = "~=3.3"
-cryptography = "~=42.0"
+pydantic = { version="~=2.10", extras = ["email"] }
+pydantic-settings = "~=2.6"
+uvicorn = { version="~=0.32", extras = ["standard"] }
+asyncpg = "~=0.30"
+python-jose = "~=3.4"
+cryptography = "~=44.0"
 passlib = { version="~=1.7", extras = ["bcrypt"] }
-pydantic = { version="~=2.6", extras = ["email"] }
-
+python-multipart = "^0.0.19"
+python-slugify = "~=8.0"
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-pytest = "~=8.0"
-black = "~=24.2"
+pytest = "~=8.3"
+black = "~=24.10"
 isort = "~=5.13"
 
 [tool.poetry.group.prod]
 optional = true
 
 [tool.poetry.group.prod.dependencies]
-gunicorn = "~=21.2"
+gunicorn = "~=23.0"
 
 [tool.black]
 line-length = 120
