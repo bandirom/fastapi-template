@@ -26,6 +26,7 @@ class Settings(BaseSettings):
         env_prefix = ""
         extra = "ignore"
 
+
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
