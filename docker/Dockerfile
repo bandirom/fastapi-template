@@ -11,7 +11,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 RUN apk add --no-cache gcc musl-dev libffi-dev && \
-    pip install poetry --upgrade
+    pip install poetry setuptools --upgrade
 
 COPY pyproject.toml poetry.lock ./
 

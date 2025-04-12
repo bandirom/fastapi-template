@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:15.1-alpine
+    image: postgres:16-alpine
     restart: 'unless-stopped'
     ports:
       - "5432:5432"
@@ -31,9 +31,11 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-    restart: 'unless-stopped'
+    env_file:
+      - .env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8000:8000"
     volumes:

@@ -25,6 +25,7 @@ cryptography = "~=44.0"
 passlib = { version="~=1.7", extras = ["bcrypt"] }
 python-multipart = "0.0.20"
 python-slugify = "~=8.0"
+httpx = "^0.28.1"
 
 [tool.poetry.group.dev]
 optional = true
@@ -34,6 +35,7 @@ pytest = "~=8.3"
 pytest-mock = "~=3.14"
 pytest-freezegun = "~=0.4"
 pytest-cov = "~=6.1"
+pytest-asyncio = "~=0.26"
 black = "~=25.1"
 isort = "~=6.0"
 
