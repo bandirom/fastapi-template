@@ -3,39 +3,47 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "fastapiproject"
+name = "Fast Api template project"
 version = "0.1.0"
 description = ""
-authors = ["Nazarii <romanchenko@procivis.ch>"]
+authors = ["Nazarii"]
 readme = "README.md"
+package-mode = false
+license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.12"
-fastapi = "~=0.111"
-alembic = "~=1.13"
+python = "^3.13"
+fastapi = "~=0.115"
+alembic = "~=1.15"
 sqlalchemy = "~=2.0"
-pydantic-settings = "~=2.2"
-uvicorn = { version="~=0.28", extras = ["standard"] }
-asyncpg = "~=0.29"
-python-jose = "~=3.3"
-cryptography = "~=42.0"
+pydantic = { version="~=2.11", extras = ["email"] }
+pydantic-settings = "~=2.8"
+uvicorn = { version="~=0.34", extras = ["standard"] }
+asyncpg = "~=0.30"
+python-jose = "~=3.4"
+cryptography = "~=44.0"
 passlib = { version="~=1.7", extras = ["bcrypt"] }
-pydantic = { version="~=2.6", extras = ["email"] }
-
+python-multipart = "0.0.20"
+python-slugify = "~=8.0"
+httpx = "^0.28.1"
 
 [tool.poetry.group.dev]
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-pytest = "~=8.0"
-black = "~=24.2"
-isort = "~=5.13"
+pytest = "~=8.3"
+pytest-mock = "~=3.14"
+pytest-cov = "~=6.1"
+pytest-asyncio = "~=0.26"
+black = "~=25.1"
+isort = "~=6.0"
+freezegun = "~=1.5"
 
 [tool.poetry.group.prod]
 optional = true
 
 [tool.poetry.group.prod.dependencies]
-gunicorn = "~=21.2"
+gunicorn = "~=23.0"
 
 [tool.black]
 line-length = 120
@@ -57,6 +65,5 @@ log_cli = true
 log_cli_level = "INFO"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
-minversion = "6.0"
 filterwarnings = "ignore"
 norecursedirs = ["docs", "build"]

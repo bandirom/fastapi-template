@@ -1,6 +1,6 @@
-FROM python:3.12-alpine as builder
+ARG PYTHON_VERSION=3.13
 
-WORKDIR /app
+FROM python:${PYTHON_VERSION}-alpine AS builder
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -8,12 +8,18 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1
 
-COPY ["pyproject.toml", "poetry.lock", "/app/"]
+WORKDIR /app
 
-RUN pip install poetry && \
-    poetry install --with prod
+RUN apk add --no-cache gcc musl-dev libffi-dev && \
+    pip install poetry setuptools --upgrade
 
-FROM python:3.12-alpine
+COPY pyproject.toml poetry.lock ./
+
+RUN poetry install --with prod
+
+
+FROM python:${PYTHON_VERSION}-alpine
+ARG PYTHON_VERSION
 
 WORKDIR /app
 
@@ -24,14 +30,16 @@ ARG GID=1000
 ARG UID=1000
 ARG USER=fastapi
 
-COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
+RUN apk add --no-cache libffi && \
+    addgroup -g $GID -S $USER && \
+    adduser -S $USER -G $USER --uid "$UID"
+
+COPY --from=builder /usr/local/lib/python${PYTHON_VERSION}/site-packages/ /usr/local/lib/python${PYTHON_VERSION}/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
 COPY . .
 
-RUN addgroup -g $GID -S $USER && \
-    adduser -S $USER -G $USER --uid "$UID" && \
-    chmod +x /app/docker/docker-entrypoint.sh
+RUN chmod +x /app/docker/docker-entrypoint.sh
 
 EXPOSE 8000
 

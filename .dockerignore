@@ -8,6 +8,7 @@ __pycache__
 .gitignore
 .env
 .dockerignore
+.editorconfig
 LICENSE
 docker-compose.yml
 docker/Dockerfile
