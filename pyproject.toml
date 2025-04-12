@@ -33,11 +33,11 @@ optional = true
 [tool.poetry.group.dev.dependencies]
 pytest = "~=8.3"
 pytest-mock = "~=3.14"
-pytest-freezegun = "~=0.4"
 pytest-cov = "~=6.1"
 pytest-asyncio = "~=0.26"
 black = "~=25.1"
 isort = "~=6.0"
+freezegun = "~=1.5"
 
 [tool.poetry.group.prod]
 optional = true
