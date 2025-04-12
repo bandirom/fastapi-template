@@ -1,4 +1,5 @@
 name: Tests
+
 on:
   push:
     branches:
@@ -27,46 +28,43 @@ jobs:
           POSTGRES_USER: fastapi
           POSTGRES_DB: template
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: install dependencies
+      - name: Install dependencies
         run: |
-          pip install poetry
-          poetry install --with dev
-      - name: pytest
-        run:
-          pytest
+          pip install 'setuptools<66' poetry
+          poetry install --with dev --no-interaction --no-ansi
+      - name: Run pytest
+        run: pytest
+
   black:
     name: run black
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: install dependencies
-        run: |
-          pip install black
-      - name: black
+      - name: Install Black
+        run: pip install black
+      - name: Check formatting with Black
         run: black . --check
+
   isort:
     name: run isort
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: install dependencies
-        run: |
-          pip install isort
-      - name: isort
+      - name: Install isort
+        run: pip install isort
+      - name: Check import sorting
         run: isort . --check
+
   alembic_check:
     name: run alembic check
     runs-on: ubuntu-latest
@@ -85,16 +83,15 @@ jobs:
           POSTGRES_USER: fastapi
           POSTGRES_DB: template
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - name: checkout repo
-        uses: actions/checkout@v4
-      - name: install dependencies
+      - name: Install dependencies
         run: |
-          pip install poetry
-          poetry install
-      - name: apply migrations
+          pip install 'setuptools<66' poetry
+          poetry install --no-interaction --no-ansi
+      - name: Apply migrations
         run: alembic upgrade head
-      - name: check migrations
+      - name: Check migrations
         run: alembic check
