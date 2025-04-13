@@ -34,7 +34,6 @@ jobs:
           python-version: '3.13'
       - name: Install dependencies
         run: |
-          pip install 'setuptools<66' poetry
           poetry install --with dev --no-interaction --no-ansi
       - name: Run pytest
         run: pytest
@@ -89,7 +88,6 @@ jobs:
           python-version: '3.13'
       - name: Install dependencies
         run: |
-          pip install 'setuptools<66' poetry
           poetry install --no-interaction --no-ansi
       - name: Apply migrations
         run: alembic upgrade head

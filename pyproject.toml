@@ -60,10 +60,13 @@ known_third_party = "celery"
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "integration"]
-addopts = "-v -ra -q"
+addopts = "-v -s -ra -q"
 log_cli = true
 log_cli_level = "INFO"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
 filterwarnings = "ignore"
 norecursedirs = ["docs", "build"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
