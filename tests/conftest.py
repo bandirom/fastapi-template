@@ -69,7 +69,7 @@ async def test_engine(test_db_uri, test_db_name) -> AsyncGenerator["AsyncEngine"
         echo=True,
         isolation_level="AUTOCOMMIT",
     )
-    test_engine = create_async_engine(url=test_db_uri, echo=False, isolation_level="AUTOCOMMIT")
+    test_engine = create_async_engine(url=test_db_uri, echo=False)
     await create_test_database(admin_engine, test_db_name)
     yield test_engine
     await admin_engine.dispose()
@@ -90,8 +90,10 @@ async def prepare_database(test_engine) -> AsyncGenerator[None, None]:
 async def db_session(test_engine) -> AsyncGenerator["AsyncSession", None]:
     _sessionmaker = async_sessionmaker(bind=test_engine, expire_on_commit=False, autocommit=False, autoflush=False)
     async with test_engine.connect() as connection:
+        transaction = await connection.begin()
         async with _sessionmaker(bind=connection) as session:
             yield session
+        await transaction.rollback()
 
 
 @pytest.fixture(scope="function")
@@ -104,50 +106,6 @@ async def client(db_session: "AsyncSession") -> AsyncGenerator[AsyncClient, None
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
     app.dependency_overrides.clear()
-
-
-# @pytest.fixture(scope="session")
-# async def connection(test_engine) -> AsyncGenerator[AsyncConnection, None]:
-#     async with test_engine.connect() as connection:
-#         yield connection
-#
-#
-# @pytest.fixture()
-# async def transaction(
-#     connection: AsyncConnection,
-# ) -> AsyncGenerator[AsyncTransaction, None]:
-#     async with connection.begin() as transaction:
-#         yield transaction
-
-
-# @pytest.fixture()
-# async def session(
-#     connection: AsyncConnection, transaction: AsyncTransaction
-# ) -> AsyncGenerator["AsyncSession", None]:
-#     async_session = AsyncSession(
-#         bind=connection,
-#         join_transaction_mode="create_savepoint",
-#     )
-#     yield async_session
-#     await transaction.rollback()
-
-
-# @pytest.fixture()
-# async def client(
-#     connection: AsyncConnection, transaction: AsyncTransaction
-# ) -> AsyncGenerator[AsyncClient, None]:
-#     async def override_get_async_session() -> AsyncGenerator[AsyncSession, None]:
-#         async_session = AsyncSession(
-#             bind=connection,
-#             join_transaction_mode="create_savepoint",
-#         )
-#         async with async_session:
-#             yield async_session
-#
-#     app.dependency_overrides[get_session] = override_get_async_session
-#     yield AsyncClient(transport=ASGITransport(app=app), base_url="http://test")
-#     app.dependency_overrides.clear()
-#     await transaction.rollback()
 
 
 @pytest.fixture()
