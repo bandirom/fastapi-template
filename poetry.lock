@@ -1871,4 +1871,4 @@ prod = ["gunicorn"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "e51ececbe768a7ebe2cfac1d7e073ea9f93948898eda33bf3c87599707e4b1aa"
+content-hash = "e63f682a2ff63f072d57a00e833c09c8d20527ed2657acafa11363789f8dd66f"

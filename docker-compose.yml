@@ -2,8 +2,6 @@ services:
   db:
     image: postgres:16-alpine
     restart: 'unless-stopped'
-    ports:
-      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -18,8 +16,6 @@ services:
   redis:
     image: redis:7.0.8-alpine
     restart: 'unless-stopped'
-    ports:
-      - "6380:6379"
     volumes:
       - redis_data:/data
     healthcheck:
@@ -37,7 +33,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "8000:8000"
+      - "8080:8080"
     volumes:
       - ./:/app
 
