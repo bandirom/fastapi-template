@@ -15,7 +15,7 @@ RUN apk add --no-cache gcc musl-dev libffi-dev && \
 
 COPY pyproject.toml poetry.lock ./
 
-RUN poetry install --with prod
+RUN poetry install --extras prod
 
 
 FROM python:${PYTHON_VERSION}-alpine
@@ -41,7 +41,7 @@ COPY . .
 
 RUN chmod +x /app/docker/docker-entrypoint.sh
 
-EXPOSE 8000
+EXPOSE 8080
 
 USER $USER
 
