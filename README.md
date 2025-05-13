@@ -1,95 +1,115 @@
-# FastApi project
+# FastApi Template project
 
-* Install dependencies (Source: [poetry](https://python-poetry.org/docs/managing-dependencies/))
+**Useful links:**
+
+- [FastAPI](https://fastapi.tiangolo.com/)
+- [Poetry dependencies](https://python-poetry.org/docs/managing-dependencies/))
+
+## Installation
+
+* Clone the repository
+
 ```shell
-poetry install --with dev
+git clone https://github.com/bandirom/fastapi-template.git
+```
+
+* Install dependencies for local development
+
+```shell
+poetry install --extras dev
 ```
 
 * Create `.env` file
+
 ```dotenv
 DATABASE_URI="postgresql+asyncpg://develop:develop@localhost/develop"
-DEBUG=true
+DEBUG=1
 SECRET_KEY="someSecret"
 ```
 
-* Run docker db
+## Run project
+
+* Up only Postgresql and Redis in docker compose
+
 ```shell
-docker-compose up -d
+docker-compose up -d db redis
 ```
 
 * Run project
-```shell
-uvicorn main:app --reload
-```
-or
+
 ```shell
 python main.py
 ```
 
-## Set up Alembic
+## Use Alembic for migrations
 
-* Init alembic
+* Init alembic (Already done in the project)
+
 ```shell
 alembic init -t async alembic
 ```
 
-* check if Alembic is working well
+* Check if Alembic works well
+
 ```shell
 alembic current
 ```
 
 * Generate migrations
+
 ```shell
-alembic revision --autogenerate -m "Create user"
+alembic revision --autogenerate -m "migration_name"
 ```
 
 * Migrate
+
 ```shell
 alembic upgrade head
 ```
 
+---
 
-## Work with async DB
+### Work with async DB
 
 * Get users
+
 ```python
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from db.models import User
 
+
 async def get_users(session: AsyncSession):
-    result = await session.execute(select(User))
-    return result.scalars().all()
+  result = await session.execute(select(User))
+  return result.scalars().all()
 ```
+
 ---
 
 ## Docker & docker compose
 
-### Useful commands
+### Local development with docker compose
+
+* Edit `.env` file
+
+```dotenv
+DATABASE_URI=postgresql+asyncpg://develop:develop@db/develop
+```
+
+* Build docker compose image
+
+```shell
+docker compose up -d --build
+```
+
+### Production
 
 * Build image
 ```shell
 docker build -t fastapi-project -f docker/Dockerfile .
 ```
 
+* (Optional) Run container
 ```shell
-docker compose build
-```
-
-* Run container
-```shell
-docker run --rm -it -p 8080:8080 fastapi-project
-```
-
-```shell
-docker compose up -d
-```
-
-* Open shell
-```shell
-docker run --rm --entrypoint="" -it fastapi-project sh
-```
-
-```shell
-docker compose exec app sh
+docker run --rm -it --env-file .env -p 8080:8080 --name fastapi-project fastapi-project
 ```
