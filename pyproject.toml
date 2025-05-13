@@ -1,7 +1,12 @@
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [project]
 name = "fast-api-template-project"
 version = "0.1.0"
 description = ""
+license = "MIT"
 authors = [
     {name = "Nazarii"}
 ]
@@ -24,10 +29,6 @@ dependencies = [
     "httpx (>=0.28.1,<0.29.0)"
 ]
 
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.group.dev]
 optional = true
