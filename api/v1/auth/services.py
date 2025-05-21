@@ -2,12 +2,13 @@ import re
 from collections import defaultdict
 
 from fastapi import HTTPException
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.error_codes import ErrorCode
 from api.exceptions import ValidationError
 from api.services.security import JwtService, PasswordManager
-from api.v1.auth.schemas import UserSignInSchema, UserSignUpSchema
+from api.v1.auth.schemas import TokenResponse, UserSignUpSchema
 from db.models import User
 from db.queries.user import UserQueryService
 
@@ -52,7 +53,7 @@ class SignUpService:
 
     async def create_user(self) -> User:
         self.data.password = self.password_manager().get_hashed_password(self.data.password)
-        user = User(**self.data.dict(), is_active=True)
+        user = User(**self.data.model_dump(), is_active=True)
         await self.query.create_user(user)
         return user
 
@@ -60,12 +61,12 @@ class SignUpService:
 class LoginService:
     password_manager = PasswordManager
 
-    def __init__(self, session: AsyncSession, data: UserSignInSchema):
+    def __init__(self, session: AsyncSession, data: OAuth2PasswordRequestForm):
         self.data = data
         self.query = UserQueryService(session)
 
     async def authenticate(self) -> User:
-        user = await self.query.get_user_by_email(self.data.email)
+        user = await self.query.get_user_by_email(self.data.username)
         if not user:
             raise ValidationError(ErrorCode.WRONG_CREDENTIALS)
         if not self.password_manager().verify_password(self.data.password, user.password):
@@ -74,11 +75,11 @@ class LoginService:
             raise ValidationError(ErrorCode.NOT_ACTIVE)
         return user
 
-    async def generate_response(self, user: User) -> dict:
+    async def generate_response(self, user: User) -> TokenResponse:
         service = JwtService()
         access_token = service.create_access_token(user.id)
         refresh_token = service.create_refresh_token(user.id)
-        return {
-            'access_token': access_token,
-            'refresh_token': refresh_token,
-        }
+        return TokenResponse(
+            access_token=access_token,
+            refresh_token=refresh_token,
+        )
