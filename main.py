@@ -15,15 +15,11 @@ logging.basicConfig(
 )
 
 
-def custom_generate_unique_id(route: APIRoute):
-    return f"{route.tags[0]}-{route.name}"
-
-
 def get_application() -> FastAPI:
     application = FastAPI(
         title=settings.project_name,
         openapi_url=f"/api/openapi.json",
-        generate_unique_id_function=custom_generate_unique_id,
+        generate_unique_id_function=lambda route: f"{route.tags[0]}-{route.name}",
         lifespan=lifespan,
     )
     application.include_router(v1_router, prefix='/api/v1')
