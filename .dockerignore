@@ -2,6 +2,7 @@
 .idea
 .vscode
 .github
+.DS_Store
 __pycache__
 
 *.md
@@ -12,3 +13,4 @@ __pycache__
 LICENSE
 docker-compose.yml
 docker/Dockerfile
+letsencrypt
