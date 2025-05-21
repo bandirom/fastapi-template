@@ -1,7 +1,8 @@
 import secrets
 from functools import lru_cache
+from typing import Literal
 
-from pydantic import BaseModel, PostgresDsn
+from pydantic import BaseModel, Field, PostgresDsn
 from pydantic_settings import BaseSettings
 
 
@@ -13,12 +14,21 @@ class JwtTokenSettings(BaseModel):
     JWT_REFRESH_SECRET_KEY: str = 'xzc'
 
 
+class CorsSettings(BaseModel):
+    allow_origins: list[str] = ["*"]
+    allow_credentials: bool = True
+    allow_methods: list[str] = ["*"]
+    allow_headers: list[str] = ["*"]
+
+
 class Settings(BaseSettings):
     database_uri: PostgresDsn
     project_name: str = 'Template'
     DEBUG: bool = False
-    jwt: JwtTokenSettings = JwtTokenSettings()
-    secret_key: str = secrets.token_urlsafe(32)
+    log_level: Literal['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'] = 'INFO'
+    jwt: JwtTokenSettings = Field(default_factory=JwtTokenSettings)
+    secret_key: str = Field(default_factory=lambda: secrets.token_urlsafe(32))
+    cors: CorsSettings = Field(default_factory=CorsSettings)
 
     class Config:
         env_nested_delimiter = "__"

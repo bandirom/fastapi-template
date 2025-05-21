@@ -2,7 +2,9 @@ from typing import Annotated
 
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm
+
 from api.services.dependencies.session import SessionDep
+
 from .schemas import SignUpResponse, TokenResponse, UserSignUpSchema
 from .services import LoginService, SignUpService
 

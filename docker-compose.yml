@@ -3,9 +3,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
+    command: ["python", "main.py"]
     env_file:
       - path: .env
         required: false
+    environment:
+      DATABASE_URI: postgresql+asyncpg://develop:develop@db/develop
     depends_on:
       - db
     ports:
