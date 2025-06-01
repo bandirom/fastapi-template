@@ -21,6 +21,11 @@ class JwtService:
         self.access_token_secret_key = settings.jwt.JWT_SECRET_KEY
         self.refresh_token_secret_key = settings.jwt.JWT_REFRESH_SECRET_KEY
 
+    def get_tokens(self, user_id: int) -> dict:
+        access_token = self.create_access_token(subject=user_id)
+        refresh_token = self.create_refresh_token(subject=user_id)
+        return {"access_token": access_token, "refresh_token": refresh_token}
+
     def create_access_token(self, subject: str | Any) -> str:
         return self.__get_encoded_jwt(subject, self.access_token_expire, self.access_token_secret_key)
 
@@ -36,6 +41,10 @@ class JwtService:
             algorithm=self.algorithm,
         )
         return encoded_jwt
+
+    def decode_token(self, token: str) -> dict:
+        payload = jwt.decode(token, self.access_token_secret_key, algorithms=[self.algorithm])
+        return payload
 
 
 class PasswordManager:
