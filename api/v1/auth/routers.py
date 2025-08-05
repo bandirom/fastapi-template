@@ -16,8 +16,3 @@ class AuthRouter(BaseRouter):
             endpoint=views.sign_in_view,
             methods=['POST'],
         )
-        self._router.add_api_route(
-            path='/logout',
-            endpoint=views.logout_view,
-            methods=['POST'],
-        )
