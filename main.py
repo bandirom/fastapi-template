@@ -1,11 +1,9 @@
 import logging
 
 from fastapi import FastAPI
-from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
 
-from api.exceptions import ValidationError
-from api.services.handlers import validation_exception_handler
+from api.errors import AppException, app_exception_handler
 from api.v1.routers import router as v1_router
 from core import lifespan, settings
 
@@ -23,7 +21,7 @@ def get_application() -> FastAPI:
         lifespan=lifespan,
     )
     application.include_router(v1_router, prefix='/api/v1')
-    application.add_exception_handler(ValidationError, validation_exception_handler)
+    application.add_exception_handler(AppException, app_exception_handler)
     application.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors.allow_origins,

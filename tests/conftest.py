@@ -6,9 +6,6 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy import insert, text
 from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.ext.asyncio import (
-    AsyncConnection,
-    AsyncSession,
-    AsyncTransaction,
     async_sessionmaker,
     create_async_engine,
 )

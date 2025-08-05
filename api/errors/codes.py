@@ -25,6 +25,3 @@ class ErrorCode(Enum):
     @property
     def detail(self) -> str:
         return self._detail
-
-    def to_json(self) -> ErrorCodeT:
-        return {"code": self.code, "detail": self.detail}

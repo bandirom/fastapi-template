@@ -3,8 +3,14 @@ from typing import Any
 
 from jose import jwt
 from passlib.context import CryptContext
+from pydantic import BaseModel
 
 from core import settings
+
+
+class TokenPayload(BaseModel):
+    sub: int
+    exp: int
 
 
 class JwtService:
@@ -42,9 +48,9 @@ class JwtService:
         )
         return encoded_jwt
 
-    def decode_token(self, token: str) -> dict:
+    def decode_token(self, token: str) -> TokenPayload:
         payload = jwt.decode(token, self.access_token_secret_key, algorithms=[self.algorithm])
-        return payload
+        return TokenPayload.model_validate(payload)
 
 
 class PasswordManager:
