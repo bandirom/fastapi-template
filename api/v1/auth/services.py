@@ -5,8 +5,7 @@ from fastapi import HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.error_codes import ErrorCode
-from api.exceptions import ValidationError
+from api.errors import ErrorCode, ValidationError
 from api.services.security import JwtService, PasswordManager
 from api.v1.auth.schemas import TokenResponse, UserSignUpSchema
 from db.models import User
