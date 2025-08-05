@@ -14,14 +14,14 @@ readme = "README.md"
 requires-python = ">=3.11"
 
 dependencies = [
-    "fastapi ~=0.115",
+    "fastapi ~=0.116",
     "alembic ~=1.16",
     "sqlalchemy ~=2.0",
     "pydantic[email] ~=2.11",
     "pydantic-settings ~=2.9",
-    "uvicorn[standard] ~=0.34",
+    "uvicorn[standard] ~=0.35",
     "asyncpg ~=0.30.0",
-    "python-jose ~=3.4",
+    "python-jose ~=3.5",
     "cryptography ~=44.0",
     "passlib[bcrypt] ~=1.7",
     "python-multipart ~=0.0.20",
@@ -31,10 +31,10 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest ~=8.3",
+    "pytest ~=8.4",
     "pytest-mock ~=3.14",
-    "pytest-cov ~=6.1",
-    "pytest-asyncio ~=0.26",
+    "pytest-cov ~=6.2",
+    "pytest-asyncio ~=1.1",
     "black ~=25.1",
     "isort ~=6.0",
     "freezegun ~=1.5"
